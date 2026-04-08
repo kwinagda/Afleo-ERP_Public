@@ -66,12 +66,12 @@ a{color:inherit}
 }
 .app-shell.rail-collapsed .rail{padding-left:12px;padding-right:12px}
 .rail-top{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
   padding:0 10px 12px;margin-bottom:12px;border-bottom:1px solid var(--line)
 }
 .rail-toggle{
   width:40px;height:40px;border-radius:12px;border:1px solid rgba(55,100,235,.12);background:#fff;color:var(--text);
-  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .18s,border-color .18s,transform .18s
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .18s,border-color .18s,transform .18s;flex:0 0 auto;margin-top:2px
 }
 .rail-toggle:hover{background:rgba(55,100,235,.05);border-color:rgba(55,100,235,.2)}
 .rail-toggle .ico{transition:transform .18s ease}
@@ -81,6 +81,7 @@ a{color:inherit}
 .brand-mark img{width:30px;height:30px;object-fit:contain}
 .brand-copy strong{display:block;font-size:18px;font-weight:700;letter-spacing:.01em;line-height:1.1}
 .brand-copy span{display:block;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:5px;line-height:1.3}
+.brand-copy{padding-top:2px}
 .app-shell.rail-collapsed .brand-copy,
 .app-shell.rail-collapsed .rail-section-title,
 .app-shell.rail-collapsed .rail-panel{display:none}
@@ -376,7 +377,7 @@ tfoot td{padding:12px 18px;font-weight:700;color:var(--text)}
     </div>
     <button class="btn-login" id="btn-login" onclick="doLogin()">Sign In</button>
     <div class="login-spinner" id="login-spinner"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/></svg></span>Verifying credentials...</div>
-    <div class="login-footer">Afleo Group · ERP Foundation Module · Authorised Access Only</div>
+    <div class="login-footer">Afleo Group · Authorised Access Only</div>
   </div>
 </div>
 
@@ -391,7 +392,7 @@ tfoot td{padding:12px 18px;font-weight:700;color:var(--text)}
         </div>
         <div class="brand-copy">
           <strong>AFLEO</strong>
-          <span>ERP Foundation</span>
+          <span>ERP</span>
         </div>
       </div>
       <button class="rail-toggle" id="rail-toggle" onclick="toggleRail()" aria-label="Toggle sidebar">
@@ -419,7 +420,7 @@ tfoot td{padding:12px 18px;font-weight:700;color:var(--text)}
 
     <div class="rail-panel">
       <h4>Product Positioning</h4>
-      <p>Foundation retrieval module.</p>
+      <p>Trade retrieval module.</p>
     </div>
   </aside>
 
@@ -436,7 +437,7 @@ tfoot td{padding:12px 18px;font-weight:700;color:var(--text)}
     <section class="hero">
       <div class="hero-card">
         <div class="hero-copy">
-          <div class="hero-kicker">Afleo ERP Foundation Module</div>
+          <div class="hero-kicker">Afleo ERP</div>
           <div class="hero-title">Trade Search</div>
           <div class="hero-text">AA, EPCG, and DFIA retrieval</div>
         </div>
