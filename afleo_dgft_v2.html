@@ -501,6 +501,7 @@ tfoot td{padding:12px 18px;font-weight:700;color:var(--text)}
 // ── CONFIG ────────────────────────────────────────────────────────────────────
 // To receive IP logs: go to https://webhook.site → copy your unique URL → paste below
 const LOG_WEBHOOK = 'https://webhook.site/REPLACE_WITH_YOUR_URL';
+const AUTH_SESSION_KEY = 'afleo_auth_session_v1';
 
 // ── CREDENTIALS (SHA-256 of "username:password") ──────────────────────────────
 const VALID_HASH = '7de939f51472497884328b76c4b7e1a57206372a8631d203e1ae5fa1224fb3e4'; // username lowercased
@@ -579,9 +580,14 @@ async function doLogin() {
   await logAccess(user, ip, success);
 
   if (success) {
-    document.getElementById('login-overlay').style.transition = 'opacity .4s';
-    document.getElementById('login-overlay').style.opacity = '0';
-    setTimeout(() => document.getElementById('login-overlay').style.display = 'none', 400);
+    try {
+      sessionStorage.setItem(AUTH_SESSION_KEY, JSON.stringify({
+        authenticated: true,
+        username: user.toLowerCase(),
+        timestamp: new Date().toISOString()
+      }));
+    } catch {}
+    hideLoginOverlay();
   } else {
     errEl.textContent = 'Incorrect username or password. Please try again.';
     errEl.className = 'login-err show';
@@ -589,6 +595,26 @@ async function doLogin() {
     spinner.className = 'login-spinner';
     document.getElementById('l-pass').value = '';
   }
+}
+
+function hideLoginOverlay() {
+  const overlay = document.getElementById('login-overlay');
+  overlay.style.transition = 'opacity .4s';
+  overlay.style.opacity = '0';
+  setTimeout(() => { overlay.style.display = 'none'; }, 400);
+}
+
+function restoreLoginSession() {
+  try {
+    const raw = sessionStorage.getItem(AUTH_SESSION_KEY);
+    if (!raw) return;
+    const session = JSON.parse(raw);
+    if (session && session.authenticated) {
+      const overlay = document.getElementById('login-overlay');
+      overlay.style.opacity = '0';
+      overlay.style.display = 'none';
+    }
+  } catch {}
 }
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
@@ -735,6 +761,8 @@ function hl(text, query) {
 
 const input = document.getElementById('sinput');
 const drop  = document.getElementById('drop');
+
+restoreLoginSession();
 
 input.addEventListener('input', () => {
   const q = input.value;
