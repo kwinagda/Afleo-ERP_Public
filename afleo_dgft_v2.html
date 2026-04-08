@@ -124,7 +124,14 @@ a{color:inherit}
 .hdr-logo{height:30px;width:auto;object-fit:contain}
 .hdr-div{width:1px;height:24px;background:rgba(55,100,235,.12)}
 .hdr-tool{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.hdr-r{font-size:12px;font-weight:600;color:var(--text);letter-spacing:.04em;text-transform:uppercase}
+.hdr-r{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hdr-status{font-size:12px;font-weight:600;color:var(--text);letter-spacing:.04em;text-transform:uppercase}
+.btn-logout{
+  display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 12px;border-radius:999px;
+  border:1px solid rgba(55,100,235,.16);background:#fff;color:var(--text);font-size:12px;font-weight:700;
+  letter-spacing:.04em;cursor:pointer;transition:background .18s,border-color .18s,color .18s
+}
+.btn-logout:hover{background:rgba(55,100,235,.05);border-color:rgba(55,100,235,.24)}
 
 .hero{margin-bottom:6px}
 .hero-card{
@@ -432,7 +439,10 @@ tfoot td{padding:12px 18px;font-weight:700;color:var(--text)}
         <div class="hdr-div"></div>
         <div class="hdr-tool">Afleo Trade Intelligence Console</div>
       </div>
-      <div class="hdr-r">Operations</div>
+      <div class="hdr-r">
+        <div class="hdr-status">Operations</div>
+        <button class="btn-logout" id="btn-logout" onclick="logout()">Logout</button>
+      </div>
     </header>
 
     <section class="hero">
@@ -502,6 +512,7 @@ tfoot td{padding:12px 18px;font-weight:700;color:var(--text)}
 // To receive IP logs: go to https://webhook.site → copy your unique URL → paste below
 const LOG_WEBHOOK = 'https://webhook.site/REPLACE_WITH_YOUR_URL';
 const AUTH_SESSION_KEY = 'afleo_auth_session_v1';
+const AUTH_TTL_MS = 12 * 60 * 60 * 1000;
 
 // ── CREDENTIALS (SHA-256 of "username:password") ──────────────────────────────
 const VALID_HASH = '7de939f51472497884328b76c4b7e1a57206372a8631d203e1ae5fa1224fb3e4'; // username lowercased
@@ -581,10 +592,11 @@ async function doLogin() {
 
   if (success) {
     try {
-      sessionStorage.setItem(AUTH_SESSION_KEY, JSON.stringify({
+      localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify({
         authenticated: true,
         username: user.toLowerCase(),
-        timestamp: new Date().toISOString()
+        timestamp: Date.now(),
+        expiresAt: Date.now() + AUTH_TTL_MS
       }));
     } catch {}
     hideLoginOverlay();
@@ -604,17 +616,40 @@ function hideLoginOverlay() {
   setTimeout(() => { overlay.style.display = 'none'; }, 400);
 }
 
+function showLoginOverlay() {
+  const overlay = document.getElementById('login-overlay');
+  overlay.style.display = 'flex';
+  overlay.style.opacity = '1';
+  const btn = document.getElementById('btn-login');
+  const spinner = document.getElementById('login-spinner');
+  const errEl = document.getElementById('login-err');
+  if (btn) btn.disabled = false;
+  if (spinner) spinner.className = 'login-spinner';
+  if (errEl) errEl.className = 'login-err';
+}
+
 function restoreLoginSession() {
   try {
-    const raw = sessionStorage.getItem(AUTH_SESSION_KEY);
+    const raw = localStorage.getItem(AUTH_SESSION_KEY);
     if (!raw) return;
     const session = JSON.parse(raw);
-    if (session && session.authenticated) {
+    if (session && session.authenticated && session.expiresAt && session.expiresAt > Date.now()) {
       const overlay = document.getElementById('login-overlay');
       overlay.style.opacity = '0';
       overlay.style.display = 'none';
+    } else {
+      localStorage.removeItem(AUTH_SESSION_KEY);
     }
   } catch {}
+}
+
+function logout() {
+  try { localStorage.removeItem(AUTH_SESSION_KEY); } catch {}
+  selectedFirm = null;
+  fuzzyCandidate = null;
+  document.getElementById('l-pass').value = '';
+  switchMode(mode);
+  showLoginOverlay();
 }
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
