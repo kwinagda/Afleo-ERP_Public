@@ -366,16 +366,17 @@ tfoot td{padding:12px 18px;font-weight:700;color:var(--text)}
     </div>
     <div class="login-subtitle">Afleo Trade Intelligence Console</div>
     <div class="login-err" id="login-err">Incorrect username or password. Please try again.</div>
+    <form onsubmit="event.preventDefault(); doLogin();">
     <div class="login-field">
       <label>Username</label>
       <input type="text" id="l-user" placeholder="Enter username" autocomplete="username"/>
     </div>
     <div class="login-field">
       <label>Password</label>
-      <input type="password" id="l-pass" placeholder="Enter password" autocomplete="current-password"
-             onkeydown="if(event.key==='Enter')doLogin()"/>
+      <input type="password" id="l-pass" placeholder="Enter password" autocomplete="current-password"/>
     </div>
-    <button class="btn-login" id="btn-login" onclick="doLogin()">Sign In</button>
+    <button class="btn-login" id="btn-login" type="submit">Sign In</button>
+    </form>
     <div class="login-spinner" id="login-spinner"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/></svg></span>Verifying credentials...</div>
     <div class="login-footer">Afleo Group · Authorised Access Only</div>
   </div>
