@@ -205,7 +205,33 @@ a{color:inherit}
 .di-noiec{font-style:italic}
 .di-empty{padding:16px}
 .mh{font-weight:700;color:var(--cyan)}
-.mh-aa,.mh-epcg,.mh-dfia{color:var(--cyan)}
+.mh-aa,.mh-epcg,.mh-dfia,.mh-nci{color:var(--cyan)}
+.nci-meta{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.nci-year-group{display:grid;gap:14px;padding:18px 0;border-top:1px solid var(--line)}
+.nci-year-group:first-child{border-top:none;padding-top:0}
+.nci-year-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nci-year-title{font-size:16px;font-weight:700;color:var(--text)}
+.nci-year-count{font-size:12px;font-weight:700;color:var(--accent);background:rgba(55,100,235,.08);border:1px solid rgba(55,100,235,.18);padding:6px 10px;border-radius:999px}
+.nci-case-grid{display:grid;gap:12px}
+.nci-case-card{border:1px solid var(--line);background:#fff;border-radius:18px;padding:16px 16px 14px;display:grid;gap:10px}
+.nci-case-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.nci-case-title{font-size:15px;font-weight:700;line-height:1.4;color:var(--text)}
+.nci-status{display:inline-flex;align-items:center;justify-content:center;padding:7px 10px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;border:1px solid transparent}
+.nci-status-approved,.nci-status-ratified{background:#e8f7ee;color:#1d6a3a;border-color:#b9e4c8}
+.nci-status-rejected{background:#fdecec;color:#b23a3a;border-color:#f3c4c4}
+.nci-status-deferred,.nci-status-wait,.nci-status-pending{background:#fff6e5;color:#8c5a09;border-color:#efd39b}
+.nci-status-default{background:#eef2ff;color:#3652b7;border-color:#cdd7ff}
+.nci-case-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}
+.nci-kv{display:grid;gap:4px}
+.nci-kv span{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.nci-kv strong{font-size:13px;line-height:1.45;font-weight:600;color:var(--text)}
+.nci-case-decision{font-size:13px;line-height:1.7;color:var(--text);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.nci-case-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:4px}
+.nci-link{font-size:12px;font-weight:700;color:var(--accent);text-decoration:none}
+.nci-link:hover{text-decoration:underline}
+.nci-card-copy{border:none;background:#edf3ff;color:var(--accent);padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer}
+.nci-card-copy:hover{background:#e2ebff}
+.nci-empty-note{font-size:13px;color:var(--muted)}
 .fuzzy-banner{
   margin-top:12px;padding:12px 14px;border-radius:14px;background:rgba(227,180,91,.1);
   border:1px solid rgba(227,180,91,.25);display:none
@@ -341,7 +367,7 @@ tfoot td{padding:12px 18px;font-weight:700;color:var(--text)}
   .app-shell.rail-collapsed .brand-copy{display:block}
   .app-shell.rail-collapsed .tab{font-size:14px;justify-content:flex-start;padding-left:16px;padding-right:16px}
   .tabs{padding:0}
-  .tab-bar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tab-bar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
   .main{grid-template-columns:1fr}
 }
 @media (max-width:760px){
@@ -357,6 +383,8 @@ tfoot td{padding:12px 18px;font-weight:700;color:var(--text)}
   .module-head{grid-template-columns:1fr}
   .srow{flex-direction:column}
   .empty{padding:18px;min-height:220px}
+  .nci-case-meta{grid-template-columns:1fr}
+  .nci-case-top,.nci-year-head,.nci-case-actions{flex-direction:column;align-items:flex-start}
 }
 </style>
 </head>
@@ -414,6 +442,7 @@ tfoot td{padding:12px 18px;font-weight:700;color:var(--text)}
         <button class="tab t-aa"  id="tab-aa"   onclick="switchMode('aa')"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 3h6l5 5v13H8z"/><path d="M14 3v5h5"/><path d="M10 13h7"/><path d="M10 17h7"/></svg></span>Advance Authorisation</button>
         <button class="tab"       id="tab-epcg" onclick="switchMode('epcg')"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="M4.9 4.9l2.1 2.1"/><path d="M17 17l2.1 2.1"/><path d="M2 12h3"/><path d="M19 12h3"/><path d="M4.9 19.1 7 17"/><path d="M17 7l2.1-2.1"/></svg></span>EPCG</button>
         <button class="tab"       id="tab-dfia" onclick="switchMode('dfia')"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8.5 12 4l8 4.5-8 4.5z"/><path d="M4 8.5V16l8 4 8-4V8.5"/><path d="M12 13v7"/></svg></span>DFIA</button>
+        <button class="tab"       id="tab-nci"  onclick="switchMode('nci')"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4h12v16H6z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg></span>NC-I</button>
       </div>
     </div>
 
@@ -450,10 +479,10 @@ tfoot td{padding:12px 18px;font-weight:700;color:var(--text)}
         <div class="hero-copy">
           <div class="hero-kicker">Afleo ERP</div>
           <div class="hero-title">Trade Search</div>
-          <div class="hero-text">AA, EPCG, and DFIA retrieval</div>
+          <div class="hero-text">AA, EPCG, DFIA, and NC-I retrieval</div>
         </div>
         <div class="hero-metrics">
-          <div class="hero-chip"><strong>3 Modules</strong><span>AA · EPCG · DFIA</span></div>
+          <div class="hero-chip"><strong>4 Modules</strong><span>AA · EPCG · DFIA · NC-I</span></div>
         </div>
       </div>
     </section>
@@ -507,6 +536,7 @@ tfoot td{padding:12px 18px;font-weight:700;color:var(--text)}
   </section>
 </div>
 
+<script src="nc1_data.js"></script>
 <script>
 // ── CONFIG ────────────────────────────────────────────────────────────────────
 // To receive IP logs: go to https://webhook.site → copy your unique URL → paste below
@@ -660,6 +690,8 @@ const DFIA_BASE = {"RANI INTERNATIONAL": {"iec": "0393030717", "years": {"2023":
 let DB_AA   = JSON.parse(JSON.stringify(AA_BASE));
 let DB_EPCG = JSON.parse(JSON.stringify(EPCG_BASE));
 let DB_DFIA = JSON.parse(JSON.stringify(DFIA_BASE));
+let DB_NCI  = JSON.parse(JSON.stringify(window.NCI_BASE || { firms: {} }));
+let NCI_RENDER_BUCKETS = {};
 
 let mode = 'aa';
 let selectedFirm = null;
@@ -736,6 +768,16 @@ const MODES = {
     stat1:'DFIA', stat1Label:'Active Workspace',
     stat2:'Year-wise View', stat2Label:'Retrieval Model'
   },
+  nci: {
+    label:'Search NC-I Cases',
+    ph:'Type company name...',
+    scard:'m-dfia', slabel:'dfia-l', sinput:'f-dfia', drop:'d-dfia', tab:'t-dfia', icon:'doc',
+    badge:'NC-I Workspace',
+    summary:'Norms Committee case retrieval.',
+    inline:'Review case status, meeting details, and decisions.',
+    stat1:'NC-I', stat1Label:'Active Workspace',
+    stat2:'Case Timeline', stat2Label:'Retrieval Model'
+  },
 };
 
 function switchMode(m) {
@@ -759,20 +801,26 @@ function switchMode(m) {
   inp.className   = 'sinput ' + cfg.sinput;
   const drop = document.getElementById('drop');
   drop.className  = 'drop ' + cfg.drop;
-  ['tab-aa','tab-epcg','tab-dfia'].forEach(id => {
+  const uploadRow = document.querySelector('.upload-row');
+  if (uploadRow) uploadRow.style.display = m === 'nci' ? 'none' : '';
+  ['tab-aa','tab-epcg','tab-dfia','tab-nci'].forEach(id => {
     document.getElementById(id).className = 'tab';
   });
   document.getElementById('tab-' + m).className = 'tab ' + cfg.tab;
+  const emptyTitle = m === 'nci' ? 'Search for a Company' : 'Search for a Firm or IEC';
+  const emptyCopy = m === 'nci'
+    ? 'Type a company name, then choose from the dropdown.'
+    : 'Type a firm name or IEC, then choose from the dropdown.';
   document.getElementById('results-area').innerHTML = `
     <div class="rcard"><div class="empty">
       <div class="empty-icon">${icon(cfg.icon,'ico ico-lg')}</div>
-      <h3>Search for a Firm or IEC</h3>
-      <p>Type a firm name or IEC, then choose from the dropdown.</p>
+      <h3>${emptyTitle}</h3>
+      <p>${emptyCopy}</p>
     </div></div>`;
 }
 
 function currentDB() {
-  return mode === 'aa' ? DB_AA.firms : mode === 'epcg' ? DB_EPCG : DB_DFIA;
+  return mode === 'aa' ? DB_AA.firms : mode === 'epcg' ? DB_EPCG : mode === 'dfia' ? DB_DFIA : DB_NCI.firms;
 }
 
 // ── SEARCH ────────────────────────────────────────────────────────────────────
@@ -781,7 +829,7 @@ function filterFirms(q) {
   if (!uq) return [];
   const db = currentDB();
   return Object.entries(db)
-    .filter(([name, val]) => name.includes(uq) || (val.iec && val.iec.toUpperCase().includes(uq)))
+    .filter(([name, val]) => name.includes(uq) || (mode !== 'nci' && val.iec && val.iec.toUpperCase().includes(uq)))
     .map(([name, val]) => ({ name, iec: val.iec || '' }))
     .slice(0, 60);
 }
@@ -824,7 +872,9 @@ function renderDropdown(list, q) {
     drop.innerHTML = '<div class="di-empty">No results found</div>';
   } else {
     drop.innerHTML = list.map((f,i) => {
-      const iec = f.iec ? `<div class="di-iec">IEC: ${hl(f.iec,q)}</div>` : `<div class="di-noiec">No IEC on record</div>`;
+      const iec = mode === 'nci'
+        ? `<div class="di-iec">NC-I case timeline available</div>`
+        : (f.iec ? `<div class="di-iec">IEC: ${hl(f.iec,q)}</div>` : `<div class="di-noiec">No IEC on record</div>`);
       return `<div class="di" data-idx="${i}" onmousedown="selectFirm('${f.name.replace(/'/g,"\'")}')">
         <div class="di-firm">${hl(f.name,q)}</div>${iec}</div>`;
     }).join('');
@@ -845,6 +895,10 @@ function selectFirm(name) {
 
 // ── OPTION B: FUZZY MERGE SUGGESTION ─────────────────────────────────────────
 function checkFuzzy(name) {
+  if (mode === 'nci') {
+    document.getElementById('fuzzy-banner').className = 'fuzzy-banner';
+    return;
+  }
   const banner = document.getElementById('fuzzy-banner');
   const match  = findFuzzyMatch(name);
   if (!match) { banner.className='fuzzy-banner'; return; }
@@ -893,6 +947,10 @@ function showResults(firmName) {
   const db   = currentDB();
   const firm = db[firmName];
   if (!firm) return;
+  if (mode === 'nci') {
+    showNciResults(firmName, firm);
+    return;
+  }
   const m = mode;
   const SHOW_LIMIT = 5;
   const LOAD_BATCH = 5;
@@ -947,6 +1005,157 @@ function showResults(firmName) {
         <button class="bcopy ${labels.cp}" onclick="copyAll('${firmName.replace(/'/g,"\'")}')">${icon('copy')}Copy All ${labels.word}</button>
       </div>
     </div>`;
+}
+
+function escapeHtml(text) {
+  return String(text || '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+function nciStatusClass(status) {
+  const s = String(status || '').toLowerCase();
+  if (s.includes('reject')) return 'nci-status-rejected';
+  if (s.includes('approve') || s.includes('ratif')) return 'nci-status-approved';
+  if (s.includes('defer')) return 'nci-status-deferred';
+  if (s.includes('wait') || s.includes('pending')) return 'nci-status-pending';
+  return 'nci-status-default';
+}
+
+function nciYear(caseItem) {
+  const candidates = caseItem.source_year_candidates || [];
+  if (candidates.length) return String(candidates[0]);
+  const match = String(caseItem.meeting_number_and_date || '').match(/\b(20\d{2})\b/);
+  return match ? match[1] : 'Unknown';
+}
+
+function renderNciCaseCard(caseItem) {
+  const status = caseItem.case_status || 'Status Not Parsed';
+  const decision = escapeHtml(caseItem.decision_text || 'Decision text not available yet.');
+  const casePayload = encodeURIComponent(JSON.stringify(caseItem));
+  return `
+    <article class="nci-case-card">
+      <div class="nci-case-top">
+        <div class="nci-case-title">${escapeHtml(caseItem.case_no || 'Case number not available')}</div>
+        <span class="nci-status ${nciStatusClass(status)}">${escapeHtml(status)}</span>
+      </div>
+      <div class="nci-case-meta">
+        <div class="nci-kv"><span>Meeting</span><strong>${escapeHtml(caseItem.meeting_number_and_date || 'Not available')}</strong></div>
+        <div class="nci-kv"><span>Licence</span><strong>${escapeHtml(caseItem.licence_number_and_date || 'Not available')}</strong></div>
+        <div class="nci-kv"><span>HQ File</span><strong>${escapeHtml(caseItem.hq_file_number || 'Not available')}</strong></div>
+        <div class="nci-kv"><span>RA File</span><strong>${escapeHtml(caseItem.ra_file_number || 'Not available')}</strong></div>
+      </div>
+      <div class="nci-case-decision">${decision}</div>
+      <div class="nci-case-actions">
+        <a class="nci-link" href="${escapeHtml(caseItem.source_pdf_url || '#')}" target="_blank" rel="noopener">Open Source PDF</a>
+        <button class="nci-card-copy" onclick="copyNciCase('${casePayload}')">Copy Case</button>
+      </div>
+    </article>`;
+}
+
+function showNciResults(firmName, firm) {
+  const SHOW_LIMIT = 5;
+  const LOAD_BATCH = 5;
+  NCI_RENDER_BUCKETS = {};
+  const cases = (firm.cases || []).slice().sort((a,b) => {
+    const ay = parseInt(nciYear(a), 10) || 0;
+    const by = parseInt(nciYear(b), 10) || 0;
+    return by - ay;
+  });
+  const grouped = {};
+  cases.forEach(caseItem => {
+    const year = nciYear(caseItem);
+    if (!grouped[year]) grouped[year] = [];
+    grouped[year].push(caseItem);
+  });
+  const years = Object.keys(grouped).sort((a,b) => (parseInt(b,10)||0) - (parseInt(a,10)||0));
+  const blocks = years.map((year, yearIdx) => {
+    const yearCases = grouped[year];
+    const bucketId = `${firmName}__${year}__${yearIdx}`.replace(/[^A-Za-z0-9_-]+/g,'_');
+    NCI_RENDER_BUCKETS[bucketId] = yearCases;
+    const visible = yearCases.slice(0, SHOW_LIMIT).map(renderNciCaseCard).join('');
+    const remaining = yearCases.length - SHOW_LIMIT;
+    return `
+      <section class="nci-year-group">
+        <div class="nci-year-head">
+          <div class="nci-year-title">${year}</div>
+          <div class="nci-year-count">${yearCases.length} case(s)</div>
+        </div>
+        <div class="nci-case-grid" id="nci-grid-${bucketId}">${visible}</div>
+        ${remaining > 0 ? `<button class="btn-more" id="nci-more-${bucketId}" onclick="loadMoreNci('${bucketId}', ${LOAD_BATCH})">Load ${Math.min(LOAD_BATCH, remaining)} more</button>` : ''}
+      </section>`;
+  }).join('');
+  document.getElementById('results-area').innerHTML = `
+    <div class="rcard">
+      <div class="rhdr aa-h">
+        <div>
+          <div class="rh-firm">${escapeHtml(firmName)}</div>
+          <div class="nci-meta">
+            <span>${cases.length} extracted case(s)</span>
+            <span>${years.length} year group(s)</span>
+            <span>OCR-pending PDFs excluded for now</span>
+          </div>
+        </div>
+        <div class="rh-badge">${cases.length} NC-I Cases</div>
+      </div>
+      <div style="padding:18px">${blocks || '<div class="nci-empty-note">No NC-I cases available for this company in the current native-readable corpus.</div>'}</div>
+      <div class="copy-bar">
+        <button class="bcopy aa-cp" onclick="copyAllNci('${firmName.replace(/'/g,"\'")}')">${icon('copy')}Copy All NC-I Cases</button>
+      </div>
+    </div>`;
+}
+
+function loadMoreNci(bucketId, batchSize) {
+  const list = NCI_RENDER_BUCKETS[bucketId] || [];
+  const grid = document.getElementById(`nci-grid-${bucketId}`);
+  const btn = document.getElementById(`nci-more-${bucketId}`);
+  if (!grid || !btn) return;
+  const shown = grid.children.length;
+  const next = list.slice(shown, shown + batchSize);
+  grid.insertAdjacentHTML('beforeend', next.map(renderNciCaseCard).join(''));
+  const remaining = list.length - (shown + next.length);
+  if (remaining > 0) btn.textContent = `Load ${Math.min(batchSize, remaining)} more`;
+  else btn.remove();
+}
+
+function copyNciCase(encodedPayload) {
+  const item = JSON.parse(decodeURIComponent(encodedPayload));
+  const text = [
+    `Case No: ${item.case_no || ''}`,
+    `Status: ${item.case_status || ''}`,
+    `Meeting: ${item.meeting_number_and_date || ''}`,
+    `HQ File: ${item.hq_file_number || ''}`,
+    `RA File: ${item.ra_file_number || ''}`,
+    `Licence: ${item.licence_number_and_date || ''}`,
+    `Decision: ${item.decision_text || ''}`,
+    `Source PDF: ${item.source_pdf_url || ''}`
+  ].join('\n');
+  navigator.clipboard.writeText(text);
+}
+
+function copyAllNci(name) {
+  const firm = currentDB()[name];
+  if (!firm) return;
+  const text = (firm.cases || []).map(item => [
+    `Case No: ${item.case_no || ''}`,
+    `Status: ${item.case_status || ''}`,
+    `Meeting: ${item.meeting_number_and_date || ''}`,
+    `HQ File: ${item.hq_file_number || ''}`,
+    `RA File: ${item.ra_file_number || ''}`,
+    `Licence: ${item.licence_number_and_date || ''}`,
+    `Decision: ${item.decision_text || ''}`,
+    `Source PDF: ${item.source_pdf_url || ''}`
+  ].join('\n')).join('\n\n---\n\n');
+  navigator.clipboard.writeText(text).then(() => {
+    const b = document.querySelector('.bcopy');
+    if (!b) return;
+    const o = b.innerHTML;
+    b.textContent = 'Copied';
+    setTimeout(() => b.innerHTML = o, 2000);
+  });
 }
 
 // ── LOAD MORE ─────────────────────────────────────────────────────────────────
